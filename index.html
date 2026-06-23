@@ -142,12 +142,44 @@
     display: flex; align-items: center; justify-content: center;
     position: relative; padding: 0;
   }
-  .feature-visual .fv-icon { font-size: 40px; opacity: .5; }
-  .feature-visual img {
-    height: 560px; width: auto; max-width: 100%;
-    object-fit: contain; display: block;
-    filter: drop-shadow(0 30px 50px rgba(23,52,30,0.20));
+  .fv-icon { font-size: 40px; opacity: .5; }
+
+  /* ---------- Realistic phone frame ---------- */
+  .phone {
+    position: relative;
+    width: 290px;
+    aspect-ratio: 9 / 19.5;
+    background: linear-gradient(145deg, #2a2c2e 0%, #16181a 42%, #0c0d0e 100%);
+    border-radius: 42px;
+    padding: 8px;
+    box-shadow:
+      0 0 0 1.5px #3a3d40,                 /* metallic outer rail */
+      0 1px 0 2px #000,                    /* fine edge */
+      0 34px 60px -22px rgba(15,28,18,0.55),
+      0 12px 24px -16px rgba(0,0,0,0.4);
   }
+  .phone::before {  /* subtle metallic top-edge highlight */
+    content: ""; position: absolute; inset: 0; border-radius: 42px;
+    background: linear-gradient(120deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 22%);
+    pointer-events: none;
+  }
+  .phone-screen {
+    position: relative; width: 100%; height: 100%;
+    border-radius: 34px; overflow: hidden;
+    background: #fbf8f3;
+  }
+  .phone-screen img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: top center;
+    display: block;
+  }
+  .phone-btn {  /* side buttons */
+    position: absolute; right: -2px; background: #1a1c1e; border-radius: 2px;
+    width: 3px; box-shadow: 1px 0 1px rgba(0,0,0,0.4);
+  }
+  .phone-btn.power { top: 150px; height: 58px; }
+  .phone-btn.vol   { top: 96px; height: 38px; left: -2px; right: auto; }
 
   /* Privacy band */
   .band { background: var(--forest); color: #fbf8f3; border-radius: 0; }
@@ -263,7 +295,14 @@
           <h3>Hear it, ID it, keep it.</h3>
           <p>Tap the microphone and BirdTRX identifies birds by song using BirdNET, right on your phone — no signal needed in the field. What you hear drops straight into your journal entry.</p>
         </div>
-        <div class="feature-visual"><img src="sb-clean.png" alt="BirdTRX Bird Song ID screen, ready to record" loading="lazy"></div>
+        <div class="feature-visual">
+          <div class="phone">
+            <span class="phone-btn vol"></span><span class="phone-btn power"></span>
+            <div class="phone-screen">
+              <img src="frame-birdsong.png" alt="BirdTRX Bird Song ID screen, ready to record" loading="lazy">
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="feature-row flip reveal">
@@ -272,7 +311,14 @@
           <h3>Every sighting becomes a memory.</h3>
           <p>Photos, voice notes and freely styled writing — each entry automatically stamped with the date, time, weather and location. A diary that's genuinely yours to keep.</p>
         </div>
-        <div class="feature-visual"><img src="sj-clean.png" alt="A BirdTRX field journal entry from Loch of the Lowes" loading="lazy"></div>
+        <div class="feature-visual">
+          <div class="phone">
+            <span class="phone-btn vol"></span><span class="phone-btn power"></span>
+            <div class="phone-screen">
+              <img src="frame-journal.png" alt="A BirdTRX field journal entry from Loch of the Lowes" loading="lazy">
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="feature-row reveal">
@@ -281,7 +327,14 @@
           <h3>Watch your life list grow.</h3>
           <p>Every sighting becomes a record — automatically. Tap any species to see every time and place you've encountered it, and export your records to eBird or BirdTrack.</p>
         </div>
-        <div class="feature-visual"><img src="sl-clean.png" alt="The BirdTRX life list showing identified species" loading="lazy"></div>
+        <div class="feature-visual">
+          <div class="phone">
+            <span class="phone-btn vol"></span><span class="phone-btn power"></span>
+            <div class="phone-screen">
+              <img src="frame-lifelist.png" alt="The BirdTRX life list showing identified species" loading="lazy">
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
