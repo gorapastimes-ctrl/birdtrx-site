@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BirdTRX — Your private birding field journal</title>
+<meta name="description" content="BirdTRX is a private birding field journal with on-device bird song identification. Keep the day, not just the tick. Made by a Scottish birder.">
+
+<!-- Open Graph / social preview -->
+<meta property="og:title" content="BirdTRX — Your private birding field journal">
+<meta property="og:description" content="On-device bird song ID and a journal you'll actually want to revisit. Private by design. No account, no ads.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg:        #fbf8f3;   /* warm paper */
+    --bg-2:      #f3ede2;   /* slightly deeper panel */
+    --ink:       #1a1c19;   /* near-black green-tinted */
+    --ink-soft:  #5a615a;   /* muted body text */
+    --forest:    #17341e;   /* BirdTRX forest green */
+    --sage:      #5c7a5e;
+    --terra:     #974722;   /* BirdTRX terracotta */
+    --line:      #e2dccf;
+    --radius:    22px;
+    --maxw:      1080px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Typography ---------- */
+  h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; font-weight: 500; line-height: 1.08; letter-spacing: -0.01em; }
+  .eyebrow {
+    font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--terra);
+    margin-bottom: 18px;
+  }
+
+  /* ---------- Nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(251,248,243,0.82);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: 'Fraunces', serif; font-weight: 600; font-size: 20px; color: var(--forest); text-decoration: none; letter-spacing: -0.01em; }
+  .brand-mark { width: 30px; height: 30px; border-radius: 9px; background: var(--forest); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 17px; }
+  .nav-cta {
+    font-size: 14px; font-weight: 600; color: #fff; background: var(--forest);
+    padding: 9px 18px; border-radius: 999px; text-decoration: none;
+    transition: transform .2s ease, background .2s ease;
+  }
+  .nav-cta:hover { background: #0f2715; transform: translateY(-1px); }
+
+  /* ---------- Hero ---------- */
+  .hero { text-align: center; padding: 100px 0 70px; }
+  .hero h1 { font-size: clamp(40px, 7vw, 76px); font-weight: 500; color: var(--forest); }
+  .hero h1 em { font-style: italic; color: var(--terra); }
+  .hero .sub {
+    font-size: clamp(17px, 2.4vw, 21px); color: var(--ink-soft);
+    max-width: 560px; margin: 24px auto 0; line-height: 1.5;
+  }
+  .hero-actions { display: flex; gap: 14px; justify-content: center; align-items: center; margin-top: 36px; flex-wrap: wrap; }
+
+  .btn-play {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 15px; font-weight: 600; color: var(--forest);
+    background: transparent; border: 1px solid var(--line); padding: 12px 22px;
+    border-radius: 999px; text-decoration: none; cursor: pointer;
+    transition: border-color .2s ease, background .2s ease;
+  }
+  .btn-play:hover { border-color: var(--sage); background: var(--bg-2); }
+  .btn-play .tri { width: 22px; height: 22px; border-radius: 50%; background: var(--terra); display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; }
+
+  /* Google Play badge (text-based, no external asset needed) */
+  .badge-play {
+    display: inline-flex; align-items: center; gap: 11px;
+    background: var(--forest); color: #fff; text-decoration: none;
+    padding: 11px 22px 11px 18px; border-radius: 14px;
+    transition: transform .2s ease, background .2s ease;
+  }
+  .badge-play:hover { background: #0f2715; transform: translateY(-1px); }
+  .badge-play svg { width: 24px; height: 24px; flex-shrink: 0; }
+  .badge-play .b-small { font-size: 10px; letter-spacing: 0.04em; opacity: .85; line-height: 1.2; }
+  .badge-play .b-big { font-size: 17px; font-weight: 600; line-height: 1.15; font-family: 'Fraunces', serif; }
+
+  /* ---------- Video frames ---------- */
+  .video-frame {
+    position: relative; width: 100%; border-radius: var(--radius);
+    overflow: hidden; background: var(--bg-2);
+    border: 1px solid var(--line); aspect-ratio: 16 / 9;
+    box-shadow: 0 30px 60px -30px rgba(23,52,30,0.30);
+  }
+  .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .video-frame.portrait { aspect-ratio: 9 / 16; max-width: 320px; margin: 0 auto; }
+  .video-placeholder {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 14px;
+    color: var(--sage); text-align: center; padding: 24px;
+  }
+  .video-placeholder .pp { width: 64px; height: 64px; border-radius: 50%; background: var(--forest); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  .video-placeholder .pl { font-size: 14px; font-weight: 600; letter-spacing: .02em; }
+  .video-placeholder .ph { font-size: 12.5px; color: var(--ink-soft); max-width: 280px; }
+
+  .hero-video { margin-top: 56px; }
+
+  /* ---------- Sections ---------- */
+  section { padding: 84px 0; }
+  .section-head { max-width: 620px; }
+  .section-head.center { margin: 0 auto; text-align: center; }
+  .section-head h2 { font-size: clamp(30px, 4.6vw, 46px); color: var(--forest); }
+  .section-head p { font-size: 17px; color: var(--ink-soft); margin-top: 16px; line-height: 1.6; }
+
+  .divider { height: 1px; background: var(--line); max-width: var(--maxw); margin: 0 auto; }
+
+  /* Feature rows (alternating) */
+  .feature-row { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .feature-row + .feature-row { margin-top: 96px; }
+  .feature-row.flip .feature-text { order: 2; }
+  .feature-text h3 { font-size: clamp(24px, 3.4vw, 34px); color: var(--forest); margin-bottom: 14px; }
+  .feature-text p { font-size: 16.5px; color: var(--ink-soft); line-height: 1.65; }
+  .feature-text .eyebrow { margin-bottom: 14px; }
+  .feature-visual {
+    display: flex; align-items: center; justify-content: center;
+    position: relative; padding: 0;
+  }
+  .feature-visual .fv-icon { font-size: 40px; opacity: .5; }
+  .feature-visual img {
+    height: 560px; width: auto; max-width: 100%;
+    object-fit: contain; display: block;
+    filter: drop-shadow(0 30px 50px rgba(23,52,30,0.20));
+  }
+
+  /* Privacy band */
+  .band { background: var(--forest); color: #fbf8f3; border-radius: 0; }
+  .band .wrap { padding-top: 84px; padding-bottom: 84px; }
+  .band .eyebrow { color: #d8b3a0; }
+  .band h2 { color: #fff; font-size: clamp(28px, 4.4vw, 44px); max-width: 640px; }
+  .band p { color: rgba(251,248,243,0.82); font-size: 17px; margin-top: 18px; max-width: 560px; line-height: 1.65; }
+  .band-points { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; }
+  .band-point h4 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 19px; color: #fff; margin-bottom: 7px; }
+  .band-point p { font-size: 14.5px; color: rgba(251,248,243,0.72); margin-top: 0; }
+
+  /* Powered-by strip */
+  .powered { text-align: center; }
+  .powered .eyebrow { color: var(--terra); }
+  .powered p { max-width: 600px; margin: 0 auto; color: var(--ink-soft); font-size: 16px; }
+  .powered .logos { display: flex; gap: 36px; justify-content: center; align-items: center; margin-top: 28px; flex-wrap: wrap; font-family: 'Fraunces', serif; font-size: 18px; color: var(--forest); font-weight: 600; }
+  .powered .logos span { opacity: .75; }
+
+  /* Final CTA */
+  .final { text-align: center; }
+  .final h2 { font-size: clamp(32px, 5.4vw, 56px); color: var(--forest); max-width: 700px; margin: 0 auto; }
+  .final h2 em { font-style: italic; color: var(--terra); }
+  .final p { font-size: 18px; color: var(--ink-soft); margin: 20px auto 0; max-width: 480px; }
+  .final .hero-actions { margin-top: 34px; }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--line); padding: 44px 0; }
+  .foot-inner { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .foot-brand { font-family: 'Fraunces', serif; font-weight: 600; color: var(--forest); font-size: 17px; }
+  .foot-links { display: flex; gap: 24px; flex-wrap: wrap; }
+  .foot-links a { color: var(--ink-soft); text-decoration: none; font-size: 14px; transition: color .2s ease; }
+  .foot-links a:hover { color: var(--forest); }
+  .foot-fine { color: var(--sage); font-size: 12.5px; margin-top: 20px; line-height: 1.6; }
+
+  /* Reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+  }
+
+  /* Responsive */
+  @media (max-width: 760px) {
+    .feature-row { grid-template-columns: 1fr; gap: 28px; }
+    .feature-row.flip .feature-text { order: 0; }
+    .band-points { grid-template-columns: 1fr; gap: 22px; }
+    .hero { padding: 64px 0 48px; }
+    section { padding: 60px 0; }
+    .nav-cta { padding: 8px 15px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand"><span class="brand-mark">🐦</span> BirdTRX</a>
+    <a href="#get" class="nav-cta">Get the app</a>
+  </div>
+</nav>
+
+<main id="top">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="wrap">
+      <h1>Keep the day,<br><em>not just the tick.</em></h1>
+      <p class="sub">BirdTRX is a private birding field journal with bird song identification built in. Identify what you hear, and keep a diary you'll actually want to look back on.</p>
+      <div class="hero-actions">
+        <a href="#get" class="badge-play" aria-label="Get it on Google Play">
+          <svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M48 59.49v393a4.33 4.33 0 0 0 7.37 3.07L260 256 55.37 56.42A4.33 4.33 0 0 0 48 59.49Z"/><path d="M345.8 174 89.22 32.64l-.16-.09c-4.42-2.4-8.62 3.58-5 7.06l201.13 200.32Z"/><path d="M84.08 472.39c-3.64 3.48.56 9.46 5 7.06l.16-.09L345.8 338l-60.61-65.85Z"/><path d="M449.38 231.93 374.31 191l-66.94 65 66.94 65 75.07-40.93a25.2 25.2 0 0 0 0-44.14Z"/></svg>
+          <span>
+            <span class="b-small">GET IT ON</span><br>
+            <span class="b-big">Google Play</span>
+          </span>
+        </a>
+        <a href="#watch" class="btn-play"><span class="tri">▶</span> Watch the intro</a>
+      </div>
+    </div>
+
+    <!-- HERO VIDEO (quick intro) -->
+    <div class="wrap hero-video reveal" id="watch">
+      <!-- TO ADD YOUR INTRO VIDEO: replace the .video-placeholder div below with:
+           <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" title="BirdTRX intro" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      -->
+      <div class="video-frame">
+        <div class="video-placeholder">
+          <span class="pp">▶</span>
+          <span class="pl">Quick intro video</span>
+          <span class="ph">A 30-second look at BirdTRX in the field. (Video coming soon.)</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <!-- FEATURES -->
+  <section>
+    <div class="wrap">
+      <div class="section-head center reveal">
+        <p class="eyebrow">What it does</p>
+        <h2>A journal, not a checklist.</h2>
+        <p>Most apps tell you what you heard, then forget it. BirdTRX keeps the whole moment — the bird, the place, the weather, the memory of the day.</p>
+      </div>
+
+      <div style="height:64px"></div>
+
+      <div class="feature-row reveal">
+        <div class="feature-text">
+          <p class="eyebrow">Bird Song ID</p>
+          <h3>Hear it, ID it, keep it.</h3>
+          <p>Tap the microphone and BirdTRX identifies birds by song using BirdNET, right on your phone — no signal needed in the field. What you hear drops straight into your journal entry.</p>
+        </div>
+        <div class="feature-visual"><img src="screenshot-birdsong-cropped.png" alt="BirdTRX Bird Song ID screen, ready to record" loading="lazy"></div>
+      </div>
+
+      <div class="feature-row flip reveal">
+        <div class="feature-text">
+          <p class="eyebrow">Rich diary entries</p>
+          <h3>Every sighting becomes a memory.</h3>
+          <p>Photos, voice notes and freely styled writing — each entry automatically stamped with the date, time, weather and location. A diary that's genuinely yours to keep.</p>
+        </div>
+        <div class="feature-visual"><img src="screenshot-journal-cropped.png" alt="A BirdTRX field journal entry from Loch of the Lowes" loading="lazy"></div>
+      </div>
+
+      <div class="feature-row reveal">
+        <div class="feature-text">
+          <p class="eyebrow">Life list</p>
+          <h3>Watch your life list grow.</h3>
+          <p>Every sighting becomes a record — automatically. Tap any species to see every time and place you've encountered it, and export your records to eBird or BirdTrack.</p>
+        </div>
+        <div class="feature-visual"><img src="screenshot-lifelist-cropped.png" alt="The BirdTRX life list showing identified species" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPLAINER VIDEO -->
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head center reveal" style="margin-bottom:40px">
+        <p class="eyebrow">See it in action</p>
+        <h2>A morning's birding, kept.</h2>
+      </div>
+      <div class="reveal">
+        <!-- TO ADD YOUR EXPLAINER VIDEO: replace the .video-placeholder div below with:
+             <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" title="BirdTRX explainer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        -->
+        <div class="video-frame">
+          <div class="video-placeholder">
+            <span class="pp">▶</span>
+            <span class="pl">Explainer video</span>
+            <span class="ph">A fuller walkthrough — recording, identifying and journaling a day out. (Video coming soon.)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRIVACY BAND -->
+  <div class="band">
+    <div class="wrap reveal">
+      <p class="eyebrow">Private by design</p>
+      <h2>Your journal lives on your phone.</h2>
+      <p>No account to create. No cloud lock-in. No advertising. BirdTRX runs bird song identification on your device — your recordings are never uploaded.</p>
+      <div class="band-points">
+        <div class="band-point">
+          <h4>On-device ID</h4>
+          <p>Bird song is identified on your phone, not on a server. It works with no signal.</p>
+        </div>
+        <div class="band-point">
+          <h4>No account needed</h4>
+          <p>Start journaling straight away. Your data stays yours, always.</p>
+        </div>
+        <div class="band-point">
+          <h4>No ads, ever</h4>
+          <p>A calm, quiet space to record your birding — nothing trying to sell to you.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POWERED BY -->
+  <section class="powered">
+    <div class="wrap reveal">
+      <p class="eyebrow">Built on trusted science</p>
+      <p>Bird song identification is powered by BirdNET, from the K. Lisa Yang Center for Conservation Bioacoustics at the Cornell Lab of Ornithology. Birding sites and rarities are powered by eBird.</p>
+      <div class="logos">
+        <span>BirdNET</span>
+        <span>Cornell Lab</span>
+        <span>eBird</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FINAL CTA -->
+  <section class="final" id="get">
+    <div class="wrap reveal">
+      <h2>Start your <em>birding journal.</em></h2>
+      <p>Free to use, with a generous daily Bird Song ID and your full journal. No account, no ads.</p>
+      <div class="hero-actions">
+        <a href="https://play.google.com/store/apps/details?id=com.gora.birdtrx" class="badge-play" aria-label="Get it on Google Play">
+          <svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M48 59.49v393a4.33 4.33 0 0 0 7.37 3.07L260 256 55.37 56.42A4.33 4.33 0 0 0 48 59.49Z"/><path d="M345.8 174 89.22 32.64l-.16-.09c-4.42-2.4-8.62 3.58-5 7.06l201.13 200.32Z"/><path d="M84.08 472.39c-3.64 3.48.56 9.46 5 7.06l.16-.09L345.8 338l-60.61-65.85Z"/><path d="M449.38 231.93 374.31 191l-66.94 65 66.94 65 75.07-40.93a25.2 25.2 0 0 0 0-44.14Z"/></svg>
+          <span>
+            <span class="b-small">GET IT ON</span><br>
+            <span class="b-big">Google Play</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-inner">
+      <span class="foot-brand">🐦 BirdTRX</span>
+      <div class="foot-links">
+        <a href="https://play.google.com/store/apps/details?id=com.gora.birdtrx">Google Play</a>
+        <a href="https://gorapastimes-ctrl.github.io/birdtrx-privacy/">Privacy</a>
+        <a href="mailto:gora.pastimes@gmail.com">Contact</a>
+      </div>
+    </div>
+    <p class="foot-fine">
+      BirdTRX is made by GoRa Pastimes, an independent developer in Dunfermline, Scotland. Bird song identification powered by BirdNET (CC BY-SA 4.0), by the Cornell Lab of Ornithology and Chemnitz University of Technology. BirdTRX is not affiliated with Cornell University. Birding data powered by eBird.
+    </p>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal — gentle, respects reduced-motion (handled in CSS too)
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
