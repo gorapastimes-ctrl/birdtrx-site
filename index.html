@@ -142,6 +142,12 @@
     display: flex; align-items: center; justify-content: center;
     position: relative; padding: 0;
   }
+  /* Wide three-phone composite (frames already baked in; no CSS frame) */
+  .feature-visual.trio { align-items: center; }
+  .feature-visual.trio img {
+    width: 100%; max-width: 560px; height: auto; display: block;
+    filter: drop-shadow(0 26px 44px rgba(23,52,30,0.22));
+  }
   .fv-icon { font-size: 40px; opacity: .5; }
 
   /* ---------- Realistic phone frame ---------- */
@@ -295,13 +301,8 @@
           <h3>Hear it, ID it, keep it.</h3>
           <p>Tap the microphone and BirdTRX identifies birds by song using BirdNET, right on your phone — no signal needed in the field. What you hear drops straight into your journal entry.</p>
         </div>
-        <div class="feature-visual">
-          <div class="phone">
-            <span class="phone-btn vol"></span><span class="phone-btn power"></span>
-            <div class="phone-screen">
-              <img src="frame-birdsong.png" alt="BirdTRX Bird Song ID screen, ready to record" loading="lazy">
-            </div>
-          </div>
+        <div class="feature-visual trio">
+          <img src="trio-birdsong.png" alt="BirdTRX Bird Song ID — live detection, recording, and results" loading="lazy">
         </div>
       </div>
 
