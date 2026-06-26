@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BirdTRX — Your private birding field journal</title>
-<meta name="description" content="BirdTRX is a private birding field journal with on-device bird song identification. Keep the day, not just the tick. Made by a Scottish birder.">
+<meta name="description" content="BirdTRX is a private birding field journal with on-device bird song identification. Where birding becomes a diary. Made by a Scottish birder.">
 
 <!-- Open Graph / social preview -->
 <meta property="og:title" content="BirdTRX — Your private birding field journal">
@@ -69,6 +69,9 @@
     transition: transform .2s ease, background .2s ease;
   }
   .nav-cta:hover { background: #0f2715; transform: translateY(-1px); }
+  .nav-right { display: flex; align-items: center; gap: 20px; }
+  .nav-link { font-size: 14px; font-weight: 500; color: var(--ink-soft); text-decoration: none; transition: color .2s ease; }
+  .nav-link:hover { color: var(--forest); }
 
   /* ---------- Hero ---------- */
   .hero { text-align: center; padding: 100px 0 70px; }
@@ -260,7 +263,10 @@
 <nav>
   <div class="wrap nav-inner">
     <a href="#top" class="brand"><span class="brand-mark">🐦</span> BirdTRX</a>
-    <a href="#get" class="nav-cta">Get the app</a>
+    <div class="nav-right">
+      <a href="faq.html" class="nav-link">FAQ</a>
+      <a href="#get" class="nav-cta">Get the app</a>
+    </div>
   </div>
 </nav>
 
@@ -269,7 +275,7 @@
   <!-- HERO -->
   <header class="hero">
     <div class="wrap">
-      <h1>Keep the day,<br><em>not just the tick.</em></h1>
+      <h1>Where birding<br>becomes <em>a diary.</em></h1>
       <p class="sub">BirdTRX is a private birding field journal with bird song identification built in. Identify what you hear, and keep a diary you'll actually want to look back on.</p>
       <div class="hero-actions">
         <a href="#get" class="badge-play" aria-label="Get it on Google Play">
